@@ -6,6 +6,10 @@ declare namespace Cloudflare {
 		mainModule: typeof import("./src/index");
 	}
 	interface Env {
+		/**
+		 * D1 database binding configured in `wrangler.jsonc` as `binding: "DB"`.
+		 */
+		DB: D1Database;
 	}
 }
 interface Env extends Cloudflare.Env {}

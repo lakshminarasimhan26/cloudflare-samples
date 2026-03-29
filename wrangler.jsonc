@@ -18,7 +18,16 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "my-first-worker",
+			"migrations_dir": "migrations",
+			// Replace this with your D1 database id (or run `wrangler d1 create` and copy the id).
+			"database_id": "my-first-worker-database"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
