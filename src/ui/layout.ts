@@ -1,4 +1,9 @@
-export function layout(title: string, body: string): string {
+export function layout(title: string, body: string, activeNav: "users" | "notifications" = "users"): string {
+	const navLink = (href: string, label: string, key: string) => {
+		const active = activeNav === key;
+		return `<a href="${href}" class="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${active ? "bg-[#f0ede8] text-[#1a1a1a]" : "text-[#9a9080] hover:text-[#1a1a1a]"}">${label}</a>`;
+	};
+
 	return /* html */ `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +16,6 @@ export function layout(title: string, body: string): string {
   <style>
     * { font-family: 'DM Sans', sans-serif; }
     h1, h2, .serif { font-family: 'DM Serif Display', serif; }
-
     body { background: #f5f3ef; }
 
     .card {
@@ -20,114 +24,78 @@ export function layout(title: string, body: string): string {
       border-radius: 16px;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
-    .card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
-    }
+    .card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+    .card-static { background: #ffffff; border: 1px solid #e5e0d8; border-radius: 16px; }
 
     .btn-primary {
-      background: #1a1a1a;
-      color: #fff;
-      border-radius: 10px;
-      padding: 10px 22px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: background 0.15s ease, transform 0.1s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      border: none;
+      background: #1a1a1a; color: #fff; border-radius: 10px; padding: 10px 22px;
+      font-weight: 500; font-size: 0.9rem; transition: background 0.15s ease, transform 0.1s ease;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border: none;
     }
     .btn-primary:hover { background: #333; transform: translateY(-1px); }
 
     .btn-secondary {
-      background: transparent;
-      color: #1a1a1a;
-      border: 1.5px solid #d0cac0;
-      border-radius: 10px;
-      padding: 10px 22px;
-      font-weight: 500;
-      font-size: 0.9rem;
+      background: transparent; color: #1a1a1a; border: 1.5px solid #d0cac0; border-radius: 10px;
+      padding: 10px 22px; font-weight: 500; font-size: 0.9rem;
       transition: border-color 0.15s, background 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
     }
     .btn-secondary:hover { border-color: #1a1a1a; background: #f0ede8; }
 
     .btn-danger {
-      background: #fff0f0;
-      color: #c0392b;
-      border: 1.5px solid #f5c6c6;
-      border-radius: 10px;
-      padding: 10px 22px;
-      font-weight: 500;
-      font-size: 0.9rem;
+      background: #fff0f0; color: #c0392b; border: 1.5px solid #f5c6c6; border-radius: 10px;
+      padding: 10px 22px; font-weight: 500; font-size: 0.9rem;
       transition: background 0.15s, border-color 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
     }
     .btn-danger:hover { background: #ffe0e0; border-color: #c0392b; }
 
-    .form-input {
-      width: 100%;
-      border: 1.5px solid #e0dbd2;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 0.95rem;
-      background: #faf9f7;
-      color: #1a1a1a;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      outline: none;
-    }
-    .form-input:focus {
-      border-color: #1a1a1a;
-      box-shadow: 0 0 0 3px rgba(26,26,26,0.07);
-      background: #fff;
+    .btn-sm {
+      padding: 6px 14px; font-size: 0.8rem; border-radius: 8px;
     }
 
+    .form-input {
+      width: 100%; border: 1.5px solid #e0dbd2; border-radius: 10px; padding: 10px 14px;
+      font-size: 0.95rem; background: #faf9f7; color: #1a1a1a;
+      transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+    }
+    .form-input:focus { border-color: #1a1a1a; box-shadow: 0 0 0 3px rgba(26,26,26,0.07); background: #fff; }
+
     .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 1rem;
-      flex-shrink: 0;
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 1rem; flex-shrink: 0;
     }
 
     .tag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 999px;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
     }
+
+    /* Notification type pills */
+    .badge-info    { background: #e8f4fd; color: #2980b9; }
+    .badge-success { background: #eafaf1; color: #1e8449; }
+    .badge-warning { background: #fef9e7; color: #c0a020; }
+    .badge-error   { background: #fff0f0; color: #c0392b; }
+
+    /* Unread row highlight */
+    .notif-unread { border-left: 3px solid #1a1a1a; }
+    .notif-read   { border-left: 3px solid transparent; opacity: 0.75; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-up { animation: fadeUp 0.4s ease both; }
+    .fade-up   { animation: fadeUp 0.4s ease both; }
     .fade-up-1 { animation-delay: 0.05s; }
     .fade-up-2 { animation-delay: 0.10s; }
     .fade-up-3 { animation-delay: 0.15s; }
 
     .toast {
-      position: fixed; bottom: 28px; right: 28px;
-      padding: 14px 22px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      z-index: 9999;
+      position: fixed; bottom: 28px; right: 28px; padding: 14px 22px;
+      border-radius: 12px; font-size: 0.9rem; font-weight: 500;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12); z-index: 9999;
       animation: fadeUp 0.3s ease both;
     }
     .toast-success { background: #1a1a1a; color: #fff; }
@@ -139,7 +107,13 @@ export function layout(title: string, body: string): string {
   <!-- Nav -->
   <nav class="bg-white border-b border-[#e5e0d8] sticky top-0 z-50">
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-      <a href="/ui/users" class="serif text-xl text-[#1a1a1a] tracking-tight">UserBase</a>
+      <div class="flex items-center gap-6">
+        <a href="/ui/users" class="serif text-xl text-[#1a1a1a] tracking-tight">UserBase</a>
+        <div class="flex items-center gap-1">
+          ${navLink("/ui/users", "Users", "users")}
+          ${navLink("/ui/notifications", "Notifications", "notifications")}
+        </div>
+      </div>
       <a href="/ui/users/new" class="btn-primary text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         New User
@@ -177,4 +151,15 @@ export function initials(firstName: string, lastName: string): string {
 
 export function formatDate(iso: string): string {
 	return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+}
+
+export function formatDateTime(iso: string): string {
+	return new Date(iso).toLocaleString("en-US", {
+		year: "numeric", month: "short", day: "numeric",
+		hour: "2-digit", minute: "2-digit",
+	});
+}
+
+export function notifBadgeClass(type: string): string {
+	return `badge-${type}`;
 }

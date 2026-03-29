@@ -1,6 +1,7 @@
 import { Hono } from "hono";
-import users from "./routes/users";
-import ui from "./routes/ui";
+import users        from "./routes/users";
+import notifications from "./routes/notifications";
+import ui           from "./routes/ui";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -8,10 +9,11 @@ const app = new Hono<{ Bindings: Env }>();
 app.get("/message", (c) => c.text("Hello, World to you all!"));
 app.get("/random",  (c) => c.text(crypto.randomUUID()));
 
-// ── REST API (/users) ─────────────────────────────────────────
-app.route("/users", users);
+// ── REST API ──────────────────────────────────────────────────
+app.route("/users",         users);
+app.route("/notifications", notifications);
 
-// ── UI Pages (/ui) ────────────────────────────────────────────
+// ── UI Pages ──────────────────────────────────────────────────
 app.route("/ui", ui);
 
 // ── Root redirect ─────────────────────────────────────────────
