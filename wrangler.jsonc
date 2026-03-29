@@ -25,7 +25,7 @@
 			"database_name": "my-first-worker",
 			"migrations_dir": "migrations",
 			// Replace this with your D1 database id (or run `wrangler d1 create` and copy the id).
-			"database_id": "my-first-worker-database"
+			"database_id": "9421c7f9-d82e-49cd-8604-7505150dcdf4"
 		}
 	]
 	/**
