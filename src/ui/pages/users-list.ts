@@ -23,6 +23,9 @@ export function usersListPage(users: UserRow[], flash?: { type: "success" | "err
 	const tiles = users.map((u, i) => {
 		const { bg, color } = avatarStyle(u.firstName);
 		const delay = Math.min(i, 5);
+		const importedTag = u.dateOfBirth
+			? `<span class="tag" style="background:#f0f3ff; color:#2e4bc6;">R2 Import</span>`
+			: `<span class="tag" style="background:${bg}; color:${color};">Active</span>`;
 		return /* html */ `
       <a href="/ui/users/${u.id}/edit"
          class="card p-5 flex flex-col gap-4 no-underline group fade-up fade-up-${delay + 1}"
@@ -31,13 +34,16 @@ export function usersListPage(users: UserRow[], flash?: { type: "success" | "err
           <div class="avatar" style="background:${bg}; color:${color};">
             ${initials(u.firstName, u.lastName)}
           </div>
-          <span class="tag" style="background:${bg}; color:${color};">Active</span>
+          ${importedTag}
         </div>
         <div>
-          <p class="font-600 text-[#1a1a1a] text-base font-semibold leading-tight">
+          <p class="text-[#1a1a1a] text-base font-semibold leading-tight">
             ${u.firstName} ${u.lastName}
           </p>
           <p class="text-[#9a9080] text-sm mt-0.5 truncate">${u.email}</p>
+          ${u.dateOfBirth
+			? `<p class="text-[#b0a898] text-xs mt-1">DOB: ${u.dateOfBirth}</p>`
+			: ""}
         </div>
         <div class="border-t border-[#f0ede8] pt-3 flex items-center justify-between">
           <span class="text-[#b0a898] text-xs">Joined ${formatDate(u.createdAt)}</span>
@@ -60,8 +66,7 @@ export function usersListPage(users: UserRow[], flash?: { type: "success" | "err
 
     ${users.length === 0
 		? emptyState
-		: `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${tiles}</div>`
-	}`;
+		: `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">${tiles}</div>`}`;
 
 	return layout("All Users", body);
 }

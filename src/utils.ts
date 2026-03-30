@@ -20,16 +20,23 @@ export function coerceCreateUserInput(payload: unknown): CreateUserInput | null 
 	if (payload === null || typeof payload !== "object") return null;
 
 	const maybe = payload as Partial<Record<keyof CreateUserInput, unknown>>;
-	const { firstName, lastName, email } = maybe;
+	const { firstName, lastName, email, dateOfBirth } = maybe;
 
 	if (!isNonEmptyString(firstName)) return null;
-	if (!isNonEmptyString(lastName)) return null;
-	if (!isNonEmptyString(email)) return null;
+	if (!isNonEmptyString(lastName))  return null;
+	if (!isNonEmptyString(email))     return null;
+
+	// dateOfBirth is optional — accept null, undefined, or a non-empty string
+	const dob =
+		typeof dateOfBirth === "string" && dateOfBirth.trim().length > 0
+			? dateOfBirth.trim()
+			: null;
 
 	return {
-		firstName: firstName.trim(),
-		lastName: lastName.trim(),
-		email: normalizeEmail(email),
+		firstName:   firstName.trim(),
+		lastName:    lastName.trim(),
+		email:       normalizeEmail(email),
+		dateOfBirth: dob,
 	};
 }
 

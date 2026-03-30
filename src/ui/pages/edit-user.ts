@@ -48,22 +48,29 @@ export function editUserPage(user: UserRow, error?: string): string {
       </div>
 
       <!-- User identity card -->
-      <div class="card p-5 mb-4 flex items-center gap-4 fade-up fade-up-1">
+      <div class="card-static p-5 mb-4 flex items-center gap-4 fade-up fade-up-1">
         <div class="avatar text-lg" style="background:${bg}; color:${color}; width:56px; height:56px; border-radius:16px;">
           ${initials(user.firstName, user.lastName)}
         </div>
         <div class="flex-1 min-w-0">
           <p class="font-semibold text-[#1a1a1a]">${user.firstName} ${user.lastName}</p>
           <p class="text-[#9a9080] text-sm truncate">${user.email}</p>
+          ${user.dateOfBirth ? `<p class="text-[#b0a898] text-xs mt-0.5">DOB: ${user.dateOfBirth}</p>` : ""}
         </div>
-        <div class="text-right text-xs text-[#b0a898] shrink-0">
-          <p>Joined</p>
-          <p class="font-medium text-[#7a7060]">${formatDate(user.createdAt)}</p>
+        <div class="flex flex-col items-end gap-1">
+          <div class="text-right text-xs text-[#b0a898]">
+            <p>Joined</p>
+            <p class="font-medium text-[#7a7060]">${formatDate(user.createdAt)}</p>
+          </div>
+          <a href="/ui/users/${user.id}/notifications"
+             class="text-xs text-[#9a9080] hover:text-[#1a1a1a] transition-colors underline underline-offset-2">
+            View notifications →
+          </a>
         </div>
       </div>
 
       <!-- Edit form -->
-      <div class="card p-7 fade-up fade-up-2">
+      <div class="card-static p-7 fade-up fade-up-2">
         ${errorBanner}
         <form method="POST" action="/ui/users/${user.id}/edit" class="flex flex-col gap-5">
 
@@ -84,6 +91,14 @@ export function editUserPage(user: UserRow, error?: string): string {
             <label class="text-sm font-medium text-[#3a3530]" for="email">Email Address</label>
             <input class="form-input" type="email" id="email" name="email"
                    value="${user.email}" required autocomplete="email" />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-[#3a3530]" for="dateOfBirth">
+              Date of Birth <span class="text-[#b0a898] font-normal">(optional)</span>
+            </label>
+            <input class="form-input" type="date" id="dateOfBirth" name="dateOfBirth"
+                   value="${user.dateOfBirth ?? ""}" />
           </div>
 
           <div class="flex items-center justify-between pt-2">

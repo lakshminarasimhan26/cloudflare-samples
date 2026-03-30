@@ -1,0 +1,7 @@
+[
+  { "firstName": "Noah",    "lastName": "Patel",     "email": "noah.patel@example.com",     "dateOfBirth": "1991-09-03" },
+  { "firstName": "Amara",   "lastName": "Diallo",    "email": "amara.diallo@example.com",   "dateOfBirth": "1994-02-19" },
+  { "firstName": "Lucas",   "lastName": "Müller",    "email": "lucas.muller@example.com",   "dateOfBirth": "1986-12-27" },
+  { "firstName": "Yuki",    "lastName": "Tanaka",    "email": "yuki.tanaka@example.com",    "dateOfBirth": "1999-05-05" },
+  { "firstName": "invalid", "lastName": "",          "email": "not-an-email",               "dateOfBirth": "2000-01-01" }
+]

@@ -20,7 +20,7 @@ export function createUserPage(error?: string): string {
         <h1 class="serif text-4xl text-[#1a1a1a]">New User</h1>
       </div>
 
-      <div class="card p-7 fade-up fade-up-1">
+      <div class="card-static p-7 fade-up fade-up-1">
         ${errorBanner}
         <form method="POST" action="/ui/users/new" class="flex flex-col gap-5">
 
@@ -41,6 +41,13 @@ export function createUserPage(error?: string): string {
             <label class="text-sm font-medium text-[#3a3530]" for="email">Email Address</label>
             <input class="form-input" type="email" id="email" name="email"
                    placeholder="john.doe@example.com" required autocomplete="email" />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-medium text-[#3a3530]" for="dateOfBirth">
+              Date of Birth <span class="text-[#b0a898] font-normal">(optional)</span>
+            </label>
+            <input class="form-input" type="date" id="dateOfBirth" name="dateOfBirth" />
           </div>
 
           <div class="flex items-center gap-3 pt-2">
